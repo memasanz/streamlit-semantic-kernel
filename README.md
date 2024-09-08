@@ -2,7 +2,6 @@
 ## Semantic Kernel with Automatic Function Calling
 https://devblogs.microsoft.com/semantic-kernel/planning-with-semantic-kernel-using-automatic-function-calling/
 
-Devis Lucato
 
 ## Parallel Function Calling Support Models:
 https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling
