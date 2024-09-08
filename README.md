@@ -5,6 +5,7 @@ https://devblogs.microsoft.com/semantic-kernel/planning-with-semantic-kernel-usi
 
 ## Parallel Function Calling Support Models:
 https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling
+
 gpt-35-turbo (1106)
 gpt-35-turbo (0125)
 gpt-4 (1106-Preview)
