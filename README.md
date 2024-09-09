@@ -21,12 +21,31 @@ AZURE_AISEARCH_URL=""
 
 ### Notebook Overview:
 
+Each Notebook builds off the previous - so try them out in order.
+
+#### Plugin:
 - [001_JokePlugIn.ipynb](001_JokePlugIn.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
-- if that notebook works, then we should be able to leverage streamlit 
+- if that notebook works, then we should be able to leverage streamlit and run the first web app:
 ```
 streamlit run 001_jokewebapp.py
 ```
+#### Function Calling and Message History
+- [002_FunctionCallingAndMessage.ipynb](002_FunctionCallingAndMessage.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
+- if that notebook works, then we should be able to leverage streamlit and run the first web app:
+```
+streamlit run 002_functionCallingAndMessage.py
+```
+#### Semantic Kernel and Automatic Function Calling
+- [003_SemanticKernelAutomaticFunctionCalling.ipynb](003_SemanticKernelAutomaticFunctionCalling.ipynb)
 
+#### Agent Function Calling
+- [004_AgentWithFunctionCalling.ipynb](004_AgentWithFunctionCalling.ipynb)
+
+#### Parallel Function Calling - (With Functions)
+- [005_parrallelfunctioncalling.ipynb](005_parrallelfunctioncalling.ipynb)
+
+#### Group Chat
+- [006_groupChat.ipynb](006_groupChat.ipynb)
 
 
 
