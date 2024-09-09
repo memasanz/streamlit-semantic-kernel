@@ -30,7 +30,7 @@ Each Notebook builds off the previous - so try them out in order.
 streamlit run 001_jokewebapp.py
 ```
 **Web App**
-![jokeBot] (images/jokeBot.)
+![jokeBot](images/jokeBot.jpg)
 
 #### Function Calling and Message History
 - [002_FunctionCallingAndMessage.ipynb](002_FunctionCallingAndMessage.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
