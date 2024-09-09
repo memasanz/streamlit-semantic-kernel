@@ -32,12 +32,15 @@ streamlit run 001_jokewebapp.py
 **Web App**
 ![jokeBot](images/jokeBot.jpg)
 
-#### Function Calling and Message History
+#### Function Calling and Message 
 - [002_FunctionCallingAndMessage.ipynb](002_FunctionCallingAndMessage.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
 - if that notebook works, then we should be able to leverage streamlit and run the first web app:
 ```
 streamlit run 002_functionCallingAndMessage.py
 ```
+**Web App**
+![emailBot](images/emailBot.jpg))
+
 #### Semantic Kernel and Automatic Function Calling
 - [003_SemanticKernelAutomaticFunctionCalling.ipynb](003_SemanticKernelAutomaticFunctionCalling.ipynb)
 
