@@ -43,6 +43,8 @@ streamlit run 002_functionCallingAndMessage.py
 
 #### Semantic Kernel and Automatic Function Calling
 - [003_SemanticKernelAutomaticFunctionCalling.ipynb](003_SemanticKernelAutomaticFunctionCalling.ipynb)
+**Web App**
+![PlugInBot](images/PlugInBot.jpg)
 
 #### Agent Function Calling
 - [004_AgentWithFunctionCalling.ipynb](004_AgentWithFunctionCalling.ipynb)
