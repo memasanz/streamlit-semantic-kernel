@@ -20,31 +20,8 @@ from service_settings import ServiceSettings
 from Plugin.EmailPlugin import EmailPlugin
 
 
-# A helper method to invoke the agent with the user input
-async def invoke_agent(kernel, chat_completion, input_text):
-   
-    
-    # Enable planning
-    execution_settings = AzureChatPromptExecutionSettings(tool_choice="auto")
-    execution_settings.function_choice_behavior = FunctionChoiceBehavior.Auto()
-
-
-    st.session_state["history"].add_user_message(input_text)
-
-    result = (await chat_completion.get_chat_message_contents(
-            chat_history=st.session_state["history"],
-            settings=execution_settings,
-            kernel=kernel,
-            arguments=KernelArguments(),
-        ))[0]
-    print(str(result))
-
-    st.session_state["history"].add_assistant_message(str(result))
-    return str(result)
-
-
-
-async def setup_kernel_and_chat():
+@st.cache_resource
+def setup_kernel_and_agent():
     kernel = Kernel()
     service_settings = ServiceSettings.create()
     # Remove all services so that this cell can be re-run without restarting the kernel
@@ -56,6 +33,34 @@ async def setup_kernel_and_chat():
     chat_completion : AzureChatCompletion = kernel.get_service(type=ChatCompletionClientBase)
 
     return kernel, chat_completion
+
+# Initialize kernel and function as global variables
+global_kernel, global_chat_completion = setup_kernel_and_agent()
+
+# A helper method to invoke the agent with the user input
+async def invoke_agent(input_text):
+   
+    
+    # Enable planning
+    execution_settings = AzureChatPromptExecutionSettings(tool_choice="auto")
+    execution_settings.function_choice_behavior = FunctionChoiceBehavior.Auto()
+
+
+    st.session_state["history"].add_user_message(input_text)
+
+    result = (await global_chat_completion.get_chat_message_contents(
+            chat_history=st.session_state["history"],
+            settings=execution_settings,
+            kernel=global_kernel,
+            arguments=KernelArguments(),
+        ))[0]
+    print(str(result))
+
+    st.session_state["history"].add_assistant_message(str(result))
+    return str(result)
+
+
+
 
 async def run_app():
     st.title("Email Bot")
@@ -76,12 +81,6 @@ async def run_app():
         st.session_state["history"] = history
         st.session_state["history"].add_system_message("You are a helpful assistant.") 
 
-    
- 
-    if "kernel" not in st.session_state or "function" not in st.session_state:
-        kernel, function = await setup_kernel_and_chat()
-        st.session_state["function"] = function
-        st.session_state["kernel"] = kernel
         
 
     for msg in st.session_state["history"]:
@@ -94,7 +93,7 @@ async def run_app():
     if prompt := st.chat_input("Tell me about an email you want to send...(or something else)"):
         # Display user message in chat message container
         st.chat_message("user").markdown(prompt)
-        result = await invoke_agent(st.session_state["kernel"], st.session_state["function"] , prompt)
+        result = await invoke_agent(prompt)
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             st.markdown(result)
