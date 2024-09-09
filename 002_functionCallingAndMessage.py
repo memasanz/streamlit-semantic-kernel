@@ -86,8 +86,9 @@ async def run_app():
 
     for msg in st.session_state["history"]:
         print(msg.role + ":" + msg.content)
-        with st.chat_message(msg.role):
-            st.markdown(msg.content)
+        if msg.role != AuthorRole.TOOL:
+            with st.chat_message(msg.role):
+                st.markdown(msg.content)
 
     # React to user input
     if prompt := st.chat_input("Tell me about an email you want to send...(or something else)"):
