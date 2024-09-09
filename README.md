@@ -29,6 +29,9 @@ Each Notebook builds off the previous - so try them out in order.
 ```
 streamlit run 001_jokewebapp.py
 ```
+**Web App**
+![jokeBot] (images/jokeBot.)
+
 #### Function Calling and Message History
 - [002_FunctionCallingAndMessage.ipynb](002_FunctionCallingAndMessage.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
 - if that notebook works, then we should be able to leverage streamlit and run the first web app:
