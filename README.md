@@ -25,7 +25,7 @@ Each Notebook builds off the previous - so try them out in order.
 
 #### Plugin:
 - [001_JokePlugIn.ipynb](001_JokePlugIn.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
-- if that notebook works, then we should be able to leverage streamlit and run the first web app:
+- when that notebook works - it means your .env file is setup, and you have the requirements installed, then we should be able to leverage streamlit and run the first web app:
 ```
 streamlit run 001_jokewebapp.py
 ```
@@ -34,7 +34,7 @@ streamlit run 001_jokewebapp.py
 
 #### Function Calling and Message 
 - [002_FunctionCallingAndMessage.ipynb](002_FunctionCallingAndMessage.ipynb): Using a Semantic Kernel Plugin from the Plugin directory.  If this won't work, we need to do some work.
-- if that notebook works, then we should be able to leverage streamlit and run the first web app:
+- when that notebook works, then we should be able to leverage streamlit and run the second web app:
 ```
 streamlit run 002_functionCallingAndMessage.py
 ```
