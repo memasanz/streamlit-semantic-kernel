@@ -1,3 +1,4 @@
 semantic-kernel
 openai
 python-dotenv
+streamlit
