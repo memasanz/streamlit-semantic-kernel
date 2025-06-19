@@ -1,4 +1,4 @@
-semantic-kernel==1.18.1
+semantic-kernel
 openai
 python-dotenv
 streamlit

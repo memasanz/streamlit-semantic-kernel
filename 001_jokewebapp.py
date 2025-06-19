@@ -14,7 +14,6 @@ from semantic_kernel.functions import KernelArguments
 @st.cache_resource
 def setup_kernel_and_agent():
     kernel = Kernel()
-    service_settings = ServiceSettings.create()
     # Remove all services so that this cell can be re-run without restarting the kernel
     kernel.remove_all_services()
     service_id = "default"

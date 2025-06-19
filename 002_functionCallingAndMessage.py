@@ -6,7 +6,7 @@ import asyncio
 from typing import Annotated
 import os
 from semantic_kernel.agents import ChatCompletionAgent
-from semantic_kernel.connectors.ai.function_choice_behavior import FunctionChoiceBehavior
+from semantic_kernel.connectors.ai import FunctionChoiceBehavior
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
 from semantic_kernel.contents.chat_history import ChatHistory
 from semantic_kernel.contents.utils.author_role import AuthorRole
@@ -23,7 +23,6 @@ from Plugin.EmailPlugin import EmailPlugin
 @st.cache_resource
 def setup_kernel_and_agent():
     kernel = Kernel()
-    service_settings = ServiceSettings.create()
     # Remove all services so that this cell can be re-run without restarting the kernel
     kernel.remove_all_services()
 
