@@ -46,14 +46,14 @@ streamlit run 002_functionCallingAndMessage.py
 **Web App**
 ![PlugInBot](images/PlugInBot.jpg)
 
-#### Agent Function Calling
-- [004_AgentWithFunctionCalling.ipynb](004_AgentWithFunctionCalling.ipynb)
+#### Semantic Kernel and SQL Function Calling
+- [004_SQLServerQueries.ipynb](004_SQLServerQueries.ipynb)
+**Web App**
+![PlugInBot](images/PlugInSQLBot.jpg)
 
 #### Parallel Function Calling - (With Functions)
 - [005_parrallelfunctioncalling.ipynb](005_parrallelfunctioncalling.ipynb)
 
-#### Group Chat
-- [006_groupChat.ipynb](006_groupChat.ipynb)
 
 
 
