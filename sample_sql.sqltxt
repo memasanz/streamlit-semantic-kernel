@@ -1,0 +1,280 @@
+
+
+-- Drop existing objects
+DROP VIEW IF EXISTS vw_UnitAvailability;
+DROP TABLE IF EXISTS IncidentNotes;
+DROP TABLE IF EXISTS UnitCapabilities;
+DROP TABLE IF EXISTS Units;
+DROP TABLE IF EXISTS Incidents;
+DROP TABLE IF EXISTS Capabilities;
+
+-- Create tables
+CREATE TABLE Capabilities (
+    CapabilityCode NVARCHAR(10) PRIMARY KEY,
+    Description NVARCHAR(100)
+);
+
+CREATE TABLE Incidents (
+    IncidentKey UNIQUEIDENTIFIER PRIMARY KEY,
+    IncidentId NVARCHAR(50),
+    Latitude FLOAT,
+    Longitude FLOAT,
+    Timestamp DATETIME,
+    Status NVARCHAR(10) CHECK (Status IN ('Open', 'Closed'))
+);
+
+CREATE TABLE Units (
+    UnitKey UNIQUEIDENTIFIER PRIMARY KEY,
+    UnitId NVARCHAR(50),
+    AssignedArea NVARCHAR(100),
+    Available BIT,
+    Status NVARCHAR(20),
+    LastKnownLatitude FLOAT,
+    LastKnownLongitude FLOAT,
+    AssignedIncident UNIQUEIDENTIFIER NULL,
+    FOREIGN KEY (AssignedIncident) REFERENCES Incidents(IncidentKey)
+);
+
+CREATE TABLE UnitCapabilities (
+    UnitKey UNIQUEIDENTIFIER,
+    CapabilityCode NVARCHAR(10),
+    PRIMARY KEY (UnitKey, CapabilityCode),
+    FOREIGN KEY (UnitKey) REFERENCES Units(UnitKey),
+    FOREIGN KEY (CapabilityCode) REFERENCES Capabilities(CapabilityCode)
+);
+
+CREATE TABLE IncidentNotes (
+    NoteId UNIQUEIDENTIFIER PRIMARY KEY,
+    IncidentKey UNIQUEIDENTIFIER,
+    Timestamp DATETIME,
+    NoteText NVARCHAR(500),
+    FOREIGN KEY (IncidentKey) REFERENCES Incidents(IncidentKey)
+);
+
+-- Insert Capabilities
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('SWAT', 'Special Weapons and Tactics');
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('K9', 'Canine Unit');
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('MED', 'Medical Response');
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('NEG', 'Negotiator');
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('FIRE', 'Fire Response');
+INSERT INTO Capabilities (CapabilityCode, Description) VALUES ('DRN', 'Drone Operator');
+
+-- Insert Incidents
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('6e42a91d-393a-4582-b9b7-8f45e20e685e', 'INC-00001', 1.670393, 103.391508, '2025-05-05 03:57:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('a3927c0c-f688-4c99-ac26-863d31831f36', 'INC-00002', -23.450116, 93.00175, '2025-02-26 04:17:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('593e1913-bb18-4f07-b6e8-42acd31a2752', 'INC-00003', -84.491133, 21.353669, '2025-02-02 01:59:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1528afd7-85cf-4b29-9a01-a990db74d6c7', 'INC-00004', -22.467382, 0.511236, '2025-04-29 20:31:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d090e25b-8298-4f24-9081-15e7b2327206', 'INC-00005', 9.572126, -117.655114, '2025-05-09 21:13:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b856e9a0-f3d0-44e6-b909-92023ff54df3', 'INC-00006', -50.193779, -144.037525, '2025-05-22 16:42:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('9ebb806b-57f2-434e-8c9d-8aa5f123e0e7', 'INC-00007', 70.702876, 45.639809, '2025-06-01 13:23:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('df76cafc-0fc3-46b5-8595-181b3cafd9d8', 'INC-00008', -45.166744, 6.319845, '2025-01-22 13:50:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('7153ffc9-a15a-4265-918f-991f4478c1ab', 'INC-00009', -65.683123, 46.04897, '2025-03-28 09:57:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('c09be268-e031-4ebb-a815-b0c2f33254b6', 'INC-00010', -66.552164, 39.396226, '2025-01-06 07:40:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1c8b3f53-3a0a-42dc-ba15-0cb5e68d0f28', 'INC-00011', -31.318385, -69.074466, '2025-02-26 15:29:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('2870ab8f-fc2f-40e2-9c12-7427f8d73c0f', 'INC-00012', 58.227507, 115.574415, '2025-04-22 10:21:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d84296aa-a3a2-4963-9c55-4805bdf7ccff', 'INC-00013', 45.324595, 138.072586, '2025-05-18 08:03:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e103d8c3-9a32-4751-bc09-97f28d00f474', 'INC-00014', 1.405333, 100.082461, '2025-02-22 11:05:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('7997c9bd-9980-4044-9f24-84b20cd81555', 'INC-00015', 68.635966, 144.23419, '2025-04-14 07:46:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('92941162-602a-4ba4-91ee-5cfc9975ad5d', 'INC-00016', 50.977311, -171.30685, '2025-05-22 05:54:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('12a2a026-31ce-46f5-86f2-899ae9b973cd', 'INC-00017', -17.811396, 129.908278, '2025-04-28 08:54:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('64149b3d-b4b3-4708-bfd6-5bbe43fd02bb', 'INC-00018', -0.07268, 82.225756, '2025-03-08 00:42:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('11e7dad7-0998-4158-81f6-25ab24308d8f', 'INC-00019', -16.766639, -60.665588, '2025-01-30 13:42:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('465762a4-a36d-4669-bcbc-904bd5e18d71', 'INC-00020', 73.126209, -97.280957, '2025-05-17 09:30:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1b011d7e-3430-4b38-8432-89226805ec41', 'INC-00021', -50.414429, 48.916516, '2025-02-26 08:09:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('62f5a1dd-c025-4c8a-8035-98e019db972c', 'INC-00022', 22.341159, -149.885238, '2025-06-24 17:48:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('692753c2-0ea8-4641-b1ef-3ebb59992c6d', 'INC-00023', 77.124775, 108.066903, '2025-05-15 20:35:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('f1b864f2-0fa6-4e91-80c7-4d1e26050841', 'INC-00024', 88.938925, 28.923268, '2025-05-09 04:31:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('097d8a8e-31f6-4282-be23-a79b18a2ace2', 'INC-00025', 72.021609, -100.304533, '2025-06-08 23:25:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('59ff4eb2-84bd-46a5-a220-98db7fd200c6', 'INC-00026', 73.231968, -55.482329, '2025-03-25 02:25:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('12b8d41a-c107-41be-9a95-9a8ca33f878b', 'INC-00027', -77.760521, -134.027633, '2025-04-05 09:18:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('2220095e-749d-4d07-897d-85266a870272', 'INC-00028', -54.241983, -96.607415, '2025-02-10 01:03:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('83656cff-b040-40da-bf1c-54d1968940ec', 'INC-00029', 61.627335, 61.08912, '2025-06-14 02:01:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('fa851be4-a493-4ee6-a719-d259d5d354ff', 'INC-00030', 55.215078, -56.412013, '2025-03-16 09:29:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('96c93170-b415-4da8-bf80-de848338feea', 'INC-00031', 65.244934, -46.257734, '2025-05-30 22:01:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0ab29459-1936-4047-91bc-0fa0c37ddfc3', 'INC-00032', -82.701343, -110.114671, '2025-05-06 07:54:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b7af5b41-161d-49f5-a4ca-5b5f237c0052', 'INC-00033', 48.42405, -21.127701, '2025-04-25 18:42:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('74266338-387c-43cc-91e9-ac2ecc72392b', 'INC-00034', -85.677804, 150.334505, '2025-05-17 02:41:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('02b86e7a-1bfe-4bcc-99f1-b15f737f331f', 'INC-00035', -42.990808, -127.341627, '2025-03-16 01:49:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d1a3a4d8-d4d9-4e3e-a155-8c872891c683', 'INC-00036', -17.677074, -16.956967, '2025-05-03 06:47:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('3d771465-9cee-499a-b8f4-f4739f7962bb', 'INC-00037', 55.079298, -123.145457, '2025-05-12 04:18:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('632adc7b-8bf7-4058-8d38-99bc10d08e41', 'INC-00038', 12.833628, 109.651467, '2025-01-06 03:09:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('eeb61277-9f44-4331-8020-f7d565d3322b', 'INC-00039', 56.809827, -156.626252, '2025-06-09 01:10:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('ed2492df-df94-4286-8ef2-87e290c7a5ea', 'INC-00040', 56.682003, 104.599823, '2025-02-28 11:53:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('c7fb31ba-6200-4c3d-a25d-2484486b1178', 'INC-00041', 19.971483, -17.263788, '2025-06-10 10:54:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('a78f9837-d528-4858-b9c8-fd4b22034225', 'INC-00042', 60.630715, 144.789987, '2025-05-21 01:52:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0bf06555-3829-477b-80d2-8b6c9900e10a', 'INC-00043', -1.854169, -69.320584, '2025-02-18 05:18:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d59484fa-dc85-4841-9227-1b17baf99788', 'INC-00044', -69.860764, -164.076916, '2025-05-25 23:52:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d1a4d609-80fc-495e-abac-9f6f3d058861', 'INC-00045', -57.949148, 52.118477, '2025-04-17 06:29:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b57f0687-ffa6-4a76-8177-6b98d8f05eeb', 'INC-00046', -58.735282, 132.597453, '2025-06-18 06:53:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('20fb4291-8ac1-4757-bf65-b23d09206e88', 'INC-00047', -0.386201, -21.551852, '2025-04-06 14:26:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1d8d6b0f-6bf2-4f32-9269-ce6fadd0d46b', 'INC-00048', -82.604973, 10.590602, '2025-05-17 00:57:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0010967d-cd0a-4d78-93b2-5e69c8daccf4', 'INC-00049', -11.37377, -179.047195, '2025-04-07 02:39:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e039c687-158a-4a68-bc91-ae5a8f4cf4d7', 'INC-00050', 14.752212, -85.719973, '2025-06-08 14:47:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('efb3975c-7352-42ba-98e7-e88f386398a5', 'INC-00051', -59.593384, 20.814837, '2025-01-07 07:42:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('689b2377-1aeb-49f4-b2df-32b01604578b', 'INC-00052', 1.383913, 80.5387, '2025-01-03 03:16:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('12c821f6-fa5d-460b-8aba-e79520149cca', 'INC-00053', -41.632339, 160.396642, '2025-04-10 05:28:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('3dce2e5b-6b1e-40db-be69-fa9d777d63bb', 'INC-00054', 80.39847, 19.873783, '2025-06-04 17:16:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('af22b023-a9da-4e47-9eb2-99009fdf4d35', 'INC-00055', -22.487341, -58.693798, '2025-04-05 05:35:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('cc43cc03-ae39-46e5-8289-ba0bc3a36b7e', 'INC-00056', 39.996032, 179.453873, '2025-02-06 01:09:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d6ed6b54-b46d-4f96-80fe-40641961ce32', 'INC-00057', -23.543969, -179.152712, '2025-06-13 13:07:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('a226c832-ee86-41fa-a01c-db0db6d60ad9', 'INC-00058', 76.384737, 156.236526, '2025-02-03 11:15:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('7f9b8e4c-7c74-4040-a421-b5b27632bad1', 'INC-00059', -81.836662, -98.309434, '2025-02-12 04:21:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('f971a4b8-e9bb-4428-aeb2-ec80566a224c', 'INC-00060', 0.298938, -136.872423, '2025-05-01 09:05:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e76693fa-ab3a-4275-ae83-1668b12ed3ef', 'INC-00061', -51.001208, 79.541689, '2025-05-08 20:55:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('ea20a71b-8074-4320-8c0f-b692f47e6e54', 'INC-00062', -55.842175, -161.508752, '2025-01-02 20:36:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('3f7bbe9d-cfd9-4396-97c0-d5bb1fcf6b82', 'INC-00063', 2.547061, 9.720705, '2025-05-22 06:40:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1661a6e1-540b-4e82-98db-8752eaabf618', 'INC-00064', -35.715014, 14.691152, '2025-03-21 00:41:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b73ca20c-8269-41b3-9705-39dc7a17663a', 'INC-00065', 64.989731, 109.86778, '2025-02-25 20:48:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('94a8bd1d-fdef-4bce-831e-6eaa7cb98975', 'INC-00066', -44.64795, 156.596845, '2025-06-25 13:21:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e51e553c-8ec2-40fb-b951-2cb42cb300df', 'INC-00067', 69.864958, 134.791699, '2025-04-16 08:43:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('95fd750d-cbb6-462a-9a29-538cb6e46c0b', 'INC-00068', -66.940883, 120.233701, '2025-03-09 10:27:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('f1462c0a-c95f-494e-ba49-2ffb075cc88e', 'INC-00069', 33.474535, -34.760747, '2025-04-17 01:51:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('7db31dee-7e79-42eb-ab2f-2649e290c5b0', 'INC-00070', 57.897842, -3.154077, '2025-03-12 10:49:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('9c6d84f8-6ae4-41f0-af42-37e5ece22d26', 'INC-00071', 40.303652, -127.578385, '2025-02-25 08:43:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('ce5ca281-073d-4bf6-a0ae-0d7a9344a072', 'INC-00072', -77.100779, 145.998874, '2025-05-25 23:08:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('6484496b-0462-4868-aae8-3a9c7b375285', 'INC-00073', 24.189085, -103.895322, '2025-05-18 06:24:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('d5891aa3-183f-459e-b8ab-7175752e781b', 'INC-00074', 73.654118, -90.973696, '2025-06-15 21:03:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('1789dd3f-bc04-4f07-8e4a-0ea7bfa0f7a5', 'INC-00075', -19.203463, -132.009137, '2025-04-30 22:00:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0a3b5362-5b66-4e32-b1f4-167b528dfdc1', 'INC-00076', -80.67543, -16.024404, '2025-05-02 19:51:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('8b2a22f8-59cf-43e4-a78a-607e73c39c23', 'INC-00077', -67.132727, 179.185385, '2025-04-24 05:36:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('dc4ed89b-8f4e-4c1f-be77-ae20d8bfa0e5', 'INC-00078', 23.393545, 129.468398, '2025-03-29 22:23:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('cd3bba2a-3eaf-412b-9319-aa0ad95b8519', 'INC-00079', -72.02556, 87.684048, '2025-02-21 04:25:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('328f4dc4-3535-4de9-a553-ef052101066f', 'INC-00080', 14.585315, -99.032896, '2025-03-08 14:56:00', 'Closed');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('a92565cb-4801-41a6-b8be-6d87a829878f', 'INC-00081', -19.281935, -49.805087, '2025-03-03 18:49:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('6815f468-0dc3-4da5-bbfc-520a66440e1a', 'INC-00082', 55.230863, -44.916322, '2025-05-18 07:23:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e8b23fd3-2fe1-42e5-b4db-41df141dcdc1', 'INC-00083', -7.558591, -162.097049, '2025-06-10 07:40:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('f45f321d-f29f-44ae-9ce4-2e863d7e3916', 'INC-00084', -9.160597, -83.394631, '2025-01-19 09:28:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('2a4f69d9-f9fb-4693-bb18-43e91e0625a2', 'INC-00085', -71.040115, -152.117509, '2025-06-22 15:35:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('262f352e-d1f6-481d-9806-00a0b6447bdb', 'INC-00086', -34.625958, 36.524524, '2025-01-01 04:30:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('aa42c8d0-8b4b-45e5-927f-005126149aca', 'INC-00087', 19.246005, 158.484475, '2025-02-27 18:01:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('c85730bb-40fe-43c6-abce-eeef6912f986', 'INC-00088', 10.23621, 97.074444, '2025-05-03 00:01:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0c295889-6c31-4e23-97f9-bfff4a1aff06', 'INC-00089', -42.984624, 168.902354, '2025-04-06 20:38:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('400402c9-98fc-44c4-bc1a-1c4dd8ff0cfe', 'INC-00090', 20.52094, -179.778947, '2025-02-14 17:45:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('8f22a916-02c7-44fb-ac42-b111740affe8', 'INC-00091', 21.094073, 135.990884, '2025-02-27 19:24:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('eda6d0db-d4bc-4ee9-baa9-0d288d5225c8', 'INC-00092', -31.145253, -23.234272, '2025-01-17 22:35:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('673f8a3d-ab4d-4c2b-9daa-733d040828dd', 'INC-00093', -46.473001, 122.032862, '2025-03-07 13:02:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b7f87126-0e6a-44ad-8279-da0a46358b25', 'INC-00094', -23.417003, -43.901721, '2025-03-21 14:58:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('b0b76019-5e57-4493-a6f5-4d39cbfe24fe', 'INC-00095', -11.390629, 141.677268, '2025-06-21 07:29:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('a5954a9d-64bf-4432-b346-afe94bc57291', 'INC-00096', 86.682377, 31.843769, '2025-03-22 19:43:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('e923b9e5-ff76-4540-83ac-4328972a8b19', 'INC-00097', -24.574797, 138.83497, '2025-04-14 05:44:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('4fe07353-e7ef-46c7-902b-a970f8b1051f', 'INC-00098', 41.771531, -61.715498, '2025-02-22 02:11:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('9337ab94-20df-427d-926d-4fc136084730', 'INC-00099', 78.837166, -37.123273, '2025-04-10 18:33:00', 'Open');
+INSERT INTO Incidents (IncidentKey, IncidentId, Latitude, Longitude, Timestamp, Status) VALUES ('0db1e2b0-a5d8-46a8-a5eb-022c7baf955b', 'INC-00100', -64.449607, -173.364509, '2025-02-15 07:34:00', 'Open');
+
+-- Insert Units
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('f02ad3d9-71f1-4217-be92-b754d4766276', 'UNIT-001', 'Area-9', 0, 'Responding', 36.112201, 108.850044, '262f352e-d1f6-481d-9806-00a0b6447bdb');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('bf1f461e-20ac-4cb8-912f-cc1b7eefa0ba', 'UNIT-002', 'Area-1', 0, 'Responding', 55.030174, -59.806632, '2a4f69d9-f9fb-4693-bb18-43e91e0625a2');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('ec5ead96-dff1-4a07-8772-479111730382', 'UNIT-003', 'Area-5', 0, 'Responding', 71.517016, -14.795239, 'c85730bb-40fe-43c6-abce-eeef6912f986');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('92e05ebb-917a-414e-9967-15cb13119275', 'UNIT-004', 'Area-8', 0, 'Responding', -58.758469, -87.887301, 'f45f321d-f29f-44ae-9ce4-2e863d7e3916');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('348d11f2-7028-4651-b89d-ab58197dcc1d', 'UNIT-005', 'Area-6', 0, 'Responding', 61.093419, 8.565351, 'aa42c8d0-8b4b-45e5-927f-005126149aca');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('bbcb22ae-b446-4c1d-b61c-e9760a44d83e', 'UNIT-006', 'Area-2', 0, 'Responding', 5.31637, 90.861511, '0db1e2b0-a5d8-46a8-a5eb-022c7baf955b');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('7f3ca0aa-4ab0-42bf-92a0-a8cae3cb4c00', 'UNIT-007', 'Area-2', 0, 'Responding', -25.999392, 165.240491, 'b0b76019-5e57-4493-a6f5-4d39cbfe24fe');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('c3263cc1-1d1b-4b6c-adcb-c0d907914390', 'UNIT-008', 'Area-7', 0, 'Responding', -34.916228, 86.163448, 'a92565cb-4801-41a6-b8be-6d87a829878f');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('a5006c3d-588f-4480-acd9-785bbb19e756', 'UNIT-009', 'Area-6', 0, 'Responding', 19.268436, 50.690768, '9337ab94-20df-427d-926d-4fc136084730');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('f6ced1a0-ec5c-468d-9ab3-9600cb6b9a46', 'UNIT-010', 'Area-6', 0, 'Responding', -66.739103, 108.880291, '0c295889-6c31-4e23-97f9-bfff4a1aff06');
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('2d02a560-8734-46e8-ac71-3cad167328f0', 'UNIT-011', 'Area-10', 1, 'Idle', -74.64662, -140.551057, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('85c2c842-9ce5-4068-9b5d-d7e1bd7f601e', 'UNIT-012', 'Area-10', 0, 'Unavailable', -52.091827, -53.795332, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('88f95b5a-0933-4c49-ac75-7c9ed992500c', 'UNIT-013', 'Area-9', 0, 'Unavailable', -37.473159, 61.422689, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('992d03d7-28f5-4e07-a17d-40d9fbbe2bf6', 'UNIT-014', 'Area-4', 1, 'Idle', -42.474341, 111.52955, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('0eb042cf-0ea9-4b8b-b09e-11fb7b8eaa0d', 'UNIT-015', 'Area-9', 0, 'Unavailable', -9.429153, 138.264387, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('823d9c58-5a5f-4895-9e31-60296df36463', 'UNIT-016', 'Area-2', 1, 'Idle', 41.773682, -101.51611, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('ea9f82c8-8238-479f-bb2a-ed6dd435ae1b', 'UNIT-017', 'Area-2', 1, 'Idle', -67.814402, -13.234088, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('b1724c4b-2b1f-4262-bd72-88cb7e65a863', 'UNIT-018', 'Area-8', 0, 'Unavailable', 1.327465, 173.539338, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('834fa3be-bcdd-423a-ad50-7f17e61dc0bd', 'UNIT-019', 'Area-6', 0, 'Unavailable', 47.369006, 89.90033, NULL);
+INSERT INTO Units (UnitKey, UnitId, AssignedArea, Available, Status, LastKnownLatitude, LastKnownLongitude, AssignedIncident) VALUES ('cd00225f-3746-4707-ad03-5e5e6cb4248a', 'UNIT-020', 'Area-1', 1, 'Idle', -15.597304, 103.748097, NULL);
+
+-- Insert Unit Capabilities
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('f02ad3d9-71f1-4217-be92-b754d4766276', 'DRN');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('f02ad3d9-71f1-4217-be92-b754d4766276', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('bf1f461e-20ac-4cb8-912f-cc1b7eefa0ba', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('bf1f461e-20ac-4cb8-912f-cc1b7eefa0ba', 'FIRE');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('ec5ead96-dff1-4a07-8772-479111730382', 'FIRE');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('ec5ead96-dff1-4a07-8772-479111730382', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('92e05ebb-917a-414e-9967-15cb13119275', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('92e05ebb-917a-414e-9967-15cb13119275', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('348d11f2-7028-4651-b89d-ab58197dcc1d', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('348d11f2-7028-4651-b89d-ab58197dcc1d', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('bbcb22ae-b446-4c1d-b61c-e9760a44d83e', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('bbcb22ae-b446-4c1d-b61c-e9760a44d83e', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('7f3ca0aa-4ab0-42bf-92a0-a8cae3cb4c00', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('7f3ca0aa-4ab0-42bf-92a0-a8cae3cb4c00', 'SWAT');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('c3263cc1-1d1b-4b6c-adcb-c0d907914390', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('c3263cc1-1d1b-4b6c-adcb-c0d907914390', 'SWAT');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('a5006c3d-588f-4480-acd9-785bbb19e756', 'DRN');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('a5006c3d-588f-4480-acd9-785bbb19e756', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('f6ced1a0-ec5c-468d-9ab3-9600cb6b9a46', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('f6ced1a0-ec5c-468d-9ab3-9600cb6b9a46', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('2d02a560-8734-46e8-ac71-3cad167328f0', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('2d02a560-8734-46e8-ac71-3cad167328f0', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('85c2c842-9ce5-4068-9b5d-d7e1bd7f601e', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('85c2c842-9ce5-4068-9b5d-d7e1bd7f601e', 'FIRE');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('88f95b5a-0933-4c49-ac75-7c9ed992500c', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('88f95b5a-0933-4c49-ac75-7c9ed992500c', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('992d03d7-28f5-4e07-a17d-40d9fbbe2bf6', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('992d03d7-28f5-4e07-a17d-40d9fbbe2bf6', 'DRN');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('0eb042cf-0ea9-4b8b-b09e-11fb7b8eaa0d', 'SWAT');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('0eb042cf-0ea9-4b8b-b09e-11fb7b8eaa0d', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('823d9c58-5a5f-4895-9e31-60296df36463', 'SWAT');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('823d9c58-5a5f-4895-9e31-60296df36463', 'FIRE');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('ea9f82c8-8238-479f-bb2a-ed6dd435ae1b', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('ea9f82c8-8238-479f-bb2a-ed6dd435ae1b', 'FIRE');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('b1724c4b-2b1f-4262-bd72-88cb7e65a863', 'NEG');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('b1724c4b-2b1f-4262-bd72-88cb7e65a863', 'SWAT');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('834fa3be-bcdd-423a-ad50-7f17e61dc0bd', 'K9');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('834fa3be-bcdd-423a-ad50-7f17e61dc0bd', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('cd00225f-3746-4707-ad03-5e5e6cb4248a', 'MED');
+INSERT INTO UnitCapabilities (UnitKey, CapabilityCode) VALUES ('cd00225f-3746-4707-ad03-5e5e6cb4248a', 'SWAT');
+
+-- Insert Incident Notes
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('8ce72b7e-943c-4c71-b072-49d7059700ee', '6e42a91d-393a-4582-b9b7-8f45e20e685e', '2025-04-21 16:36:00', 'Caller reported suspicious activity near coordinates -7.430556, -37.89556.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('d07f6feb-7a37-45ce-8ea5-dd91c9906eb9', 'a3927c0c-f688-4c99-ac26-863d31831f36', '2025-02-19 01:17:00', 'Caller reported suspicious activity near coordinates 49.643964, 68.712328.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('6535a223-a943-4352-868e-e2aee002a130', '593e1913-bb18-4f07-b6e8-42acd31a2752', '2025-04-09 16:50:00', 'Caller reported suspicious activity near coordinates -73.248793, 87.490156.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('88d03427-d744-4568-b396-269127afe97e', '1528afd7-85cf-4b29-9a01-a990db74d6c7', '2025-03-10 13:12:00', 'Caller reported suspicious activity near coordinates 20.505128, 57.458545.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('5ae26e69-a504-4201-8b1a-8cb3438de659', 'd090e25b-8298-4f24-9081-15e7b2327206', '2025-06-23 13:17:00', 'Caller reported suspicious activity near coordinates 50.613846, 85.698622.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('64d10cc3-e731-4d6d-b523-d1ae77623148', 'b856e9a0-f3d0-44e6-b909-92023ff54df3', '2025-06-16 06:30:00', 'Caller reported suspicious activity near coordinates 24.349517, 1.942854.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('f5c52489-9568-43e9-aa82-675b5335aaaf', '9ebb806b-57f2-434e-8c9d-8aa5f123e0e7', '2025-02-03 18:11:00', 'Caller reported suspicious activity near coordinates 71.904997, 76.629252.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('c1a18d15-91ed-45bd-b818-e746855977b8', 'df76cafc-0fc3-46b5-8595-181b3cafd9d8', '2025-03-27 22:09:00', 'Caller reported suspicious activity near coordinates -50.438251, 146.763204.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('37ee8d9c-a676-4c13-8882-b9cec64329d1', '7153ffc9-a15a-4265-918f-991f4478c1ab', '2025-05-09 21:24:00', 'Caller reported suspicious activity near coordinates 73.870268, 63.545942.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('9df33462-1261-4e47-b8f8-a8d7d11bf57a', 'c09be268-e031-4ebb-a815-b0c2f33254b6', '2025-03-21 11:03:00', 'Caller reported suspicious activity near coordinates 61.920274, 27.73183.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('1da3e8a3-d442-466e-b612-3fdf6b53a595', '1c8b3f53-3a0a-42dc-ba15-0cb5e68d0f28', '2025-02-19 14:53:00', 'Caller reported suspicious activity near coordinates 63.212193, -132.215261.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('9cc93c76-6495-4327-9a9d-af1e6dc91d3f', '2870ab8f-fc2f-40e2-9c12-7427f8d73c0f', '2025-04-10 12:05:00', 'Caller reported suspicious activity near coordinates -23.585562, 143.774718.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('8330a4d9-5928-48f3-a3fe-5b372afc947d', 'd84296aa-a3a2-4963-9c55-4805bdf7ccff', '2025-04-07 16:01:00', 'Caller reported suspicious activity near coordinates -63.712353, -168.403859.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('7b91d463-5c35-4981-8605-3f0074cc91cf', 'e103d8c3-9a32-4751-bc09-97f28d00f474', '2025-06-09 03:14:00', 'Caller reported suspicious activity near coordinates 19.954057, 27.31998.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('426be232-1710-4ecd-ba84-6763839dde80', '7997c9bd-9980-4044-9f24-84b20cd81555', '2025-03-16 06:51:00', 'Caller reported suspicious activity near coordinates 70.115102, 68.754688.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('5d26fc9a-4260-4fd7-9795-e6120021c6a9', '92941162-602a-4ba4-91ee-5cfc9975ad5d', '2025-01-26 08:32:00', 'Caller reported suspicious activity near coordinates -59.622436, -159.993429.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('bb666bbe-a72c-4e2b-bfc0-15466ebe7510', '12a2a026-31ce-46f5-86f2-899ae9b973cd', '2025-01-29 01:32:00', 'Caller reported suspicious activity near coordinates -21.109616, 151.061117.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('2bc6fea8-26f4-4c15-b0db-a30cc8219e2f', '64149b3d-b4b3-4708-bfd6-5bbe43fd02bb', '2025-03-13 11:05:00', 'Caller reported suspicious activity near coordinates -57.135269, 121.230371.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('7e2d08df-696e-4b4e-8d53-27c128f9e390', '11e7dad7-0998-4158-81f6-25ab24308d8f', '2025-05-03 18:00:00', 'Caller reported suspicious activity near coordinates -52.803459, -173.339789.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('d22eea32-3f33-4d2a-84a8-5a5dffea0d8f', '465762a4-a36d-4669-bcbc-904bd5e18d71', '2025-05-29 20:41:00', 'Caller reported suspicious activity near coordinates -62.289856, -71.595725.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('d07ec9af-2b73-477e-88c6-a50f9d0c8cea', '1b011d7e-3430-4b38-8432-89226805ec41', '2025-03-08 04:59:00', 'Caller reported suspicious activity near coordinates 82.49138, 114.976042.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('61295a6d-8dcc-41bb-b39c-ddaba47a2304', '62f5a1dd-c025-4c8a-8035-98e019db972c', '2025-05-14 22:19:00', 'Caller reported suspicious activity near coordinates -83.434963, 147.154102.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('3415f6cc-8638-4e4f-a2b3-a6c826066ba3', '692753c2-0ea8-4641-b1ef-3ebb59992c6d', '2025-02-02 02:32:00', 'Caller reported suspicious activity near coordinates -43.978594, -55.452088.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('fc243ef8-de6b-45d9-babc-604a0ca755c0', 'f1b864f2-0fa6-4e91-80c7-4d1e26050841', '2025-04-05 03:11:00', 'Caller reported suspicious activity near coordinates 14.79466, 50.305005.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('d87866ea-c834-4d25-a759-9d062a5332e5', '097d8a8e-31f6-4282-be23-a79b18a2ace2', '2025-05-14 18:45:00', 'Caller reported suspicious activity near coordinates 15.155553, 108.482915.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('b8348574-b8b5-460b-8f1a-b8077ef4e5f1', '59ff4eb2-84bd-46a5-a220-98db7fd200c6', '2025-02-20 23:12:00', 'Caller reported suspicious activity near coordinates 9.958238, -82.558868.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('ae0c474b-7084-4e5e-9c64-25a531bd81e5', '12b8d41a-c107-41be-9a95-9a8ca33f878b', '2025-04-23 11:56:00', 'Caller reported suspicious activity near coordinates -44.282969, 63.222319.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('46c28fa2-2988-401e-8fdd-48644a727a0d', '2220095e-749d-4d07-897d-85266a870272', '2025-01-06 04:26:00', 'Caller reported suspicious activity near coordinates 49.103276, 85.998543.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('0e0d67ed-ddff-40e6-ad82-562a133ba881', '83656cff-b040-40da-bf1c-54d1968940ec', '2025-04-17 03:13:00', 'Caller reported suspicious activity near coordinates -34.402989, -150.670779.');
+INSERT INTO IncidentNotes (NoteId, IncidentKey, Timestamp, NoteText) VALUES ('416f3ae3-c1a0-4228-b6c2-ab284cde316e', 'fa851be4-a493-4ee6-a719-d259d5d354ff', '2025-02-04 12:15:00', 'Caller reported suspicious activity near coordinates -47.480723, 9.876306.');
+
+
+GO
+-- Create view
+CREATE VIEW vw_UnitAvailability AS
+SELECT 
+    u.UnitId,
+    u.AssignedArea,
+    u.Available,
+    u.Status,
+    u.LastKnownLatitude,
+    u.LastKnownLongitude,
+    STRING_AGG(uc.CapabilityCode, ',') AS Capabilities,
+    i.IncidentId AS AssignedIncidentId,
+    i.Timestamp AS IncidentTimestamp,
+    i.Latitude AS IncidentLatitude,
+    i.Longitude AS IncidentLongitude,
+    i.Status AS IncidentStatus
+FROM Units u
+LEFT JOIN UnitCapabilities uc ON u.UnitKey = uc.UnitKey
+LEFT JOIN Incidents i ON u.AssignedIncident = i.IncidentKey
+GROUP BY u.UnitId, u.AssignedArea, u.Available, u.Status, u.LastKnownLatitude, u.LastKnownLongitude, i.IncidentId, i.Timestamp, i.Latitude, i.Longitude, i.Status;
