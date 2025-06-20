@@ -2,3 +2,6 @@ semantic-kernel
 openai
 python-dotenv
 streamlit
+pyodbc
+pandas
+sqlalchemy
