@@ -48,6 +48,11 @@ streamlit run 002_functionCallingAndMessage.py
 
 #### Semantic Kernel and SQL Function Calling
 - [004_SQLServerQueries.ipynb](004_SQLServerQueries.ipynb)
+
+```
+streamlit run 004_SQLServerQueries.py
+```
+
 **Web App**
 ![PlugInBot](images/PlugInSQLBot.jpg)
 
